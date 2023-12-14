@@ -2,32 +2,37 @@
 
 **tldextract-rs** is a high performance [effective top level domains (eTLD)](https://wiki.mozilla.org/Public_Suffix_List) extraction module that extracts subcomponents from Domain.
 
-- Using
+### Hostname
+- Cargo.toml:
 
-```bash
-Usage: tldextract-cli [-j] [-t <target>] [-i] [--disable-private-domains]
-
-Reach new heights.
-
-Options:
-  -j, --json        print format json
-  -t, --target      target
-  -i, --interactive interactive mode
-  --disable-private-domains
-                    disable private domains
-  --help            display usage information
+```toml
+tld_extract = { git = "https://github.com/emo-cat/tldextract-rs" }
 ```
-- example
 
-```bash
-➜  tldextract-rs git:(main) ✗ tldextract-cli  -j -t mirrors.tuna.tsinghua.edu.cn
+- example code
+
+```rust
+use tld_extract::TLDExtract;
+
+fn main() {
+    let source = tld_extract::Source::Hardcode;
+    let suffix = tld_extract::SuffixList::new(source, false, None);
+    let mut extract = TLDExtract::new(suffix, true).unwrap();
+    let e = extract.extract("  mirrors.tuna.tsinghua.edu.cn").unwrap();
+    let s = serde_json::to_string_pretty(&e).unwrap();
+    println!("{:}", s);
+}
+```
+
+- ExtractResult
+
+```json
 {
   "subdomain": "mirrors.tuna",
   "domain": "tsinghua",
   "suffix": "edu.cn",
   "registered_domain": "tsinghua.edu.cn"
 }
- 
 ```
 
 ## Implementation details

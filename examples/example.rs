@@ -1,8 +1,8 @@
-use tldextract::TLDExtract;
+use tld_extract::TLDExtract;
 
 fn main() {
-  let source = tldextract::Source::Hardcode;
-  let suffix = tldextract::SuffixList::new(source, false, None);
+  let source = tld_extract::Source::Snapshot;
+  let suffix = tld_extract::SuffixList::new(source, false, None);
   let mut extract = TLDExtract::new(suffix, true).unwrap();
   let e = extract.extract("  mirrors.tuna.tsinghua.edu.cn");
   println!("{e:#?}");

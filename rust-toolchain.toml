@@ -1,5 +1,5 @@
 [toolchain]
-channel = "1.67.0"
-components = ["rustfmt", "clippy"]
+channel = "stable"
+components = ["rustc", "cargo", "rustfmt", "clippy", "rust-src"]
 
 #https://rust-lang.github.io/rustup/overrides.html

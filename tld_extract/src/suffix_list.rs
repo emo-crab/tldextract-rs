@@ -1,6 +1,9 @@
 use super::error::Result;
-use crate::public_suffix_list::PUBLIC_SUFFIX_LIST;
-use crate::{TLDExtractError, TLDTrieTree};
+use crate::snapshot::PUBLIC_SUFFIX_LIST;
+#[cfg(feature = "reqwest")]
+use crate::TLDExtractError;
+use crate::TLDTrieTree;
+#[cfg(feature = "reqwest")]
 use reqwest::IntoUrl;
 use std::collections::HashSet;
 use std::io;
@@ -9,47 +12,47 @@ use std::path::PathBuf;
 use std::time::SystemTime;
 
 const PUBLIC_PRIVATE_SUFFIX_SEPARATOR: &str = "// ===BEGIN PRIVATE DOMAINS===";
+#[cfg(feature = "reqwest")]
 const PUBLIC_SUFFIX_LIST_URLS: &[&str] = &[
   "https://publicsuffix.org/list/public_suffix_list.dat",
   "https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat",
 ];
 
-/// Where to load the data source
+/// Where to read data as a prefix list
 #[derive(Debug, Clone)]
+#[derive(Default)]
 pub enum Source {
   /// Read from text
   Text(String),
-  /// Hardcode
-  Hardcode,
+  /// Snapshot
+  #[default]
+  Snapshot,
   /// Read from file
   Local(PathBuf),
   /// Read from remote URL，NONE default: PUBLIC_SUFFIX_LIST_URLS
+  #[cfg(feature = "reqwest")]
   Remote(Option<reqwest::Url>),
 }
 
-impl Default for Source {
-  fn default() -> Self {
-    Source::Hardcode
-  }
-}
+
 
 /// Mainly implementing the resolution and classification of domain names
 #[derive(Debug, Default, Clone)]
 pub struct SuffixList {
-  // 数据源
-  source: Source,
-  // 额外的数据源
-  extra: Option<Source>,
-  // 公开域名
-  public_suffixes: HashSet<String>,
-  // 私有域名
-  private_suffixes: HashSet<String>,
-  // 是否禁用私有域名
-  disable_private_domains: bool,
-  // 过期时间，单位秒
-  expire: Option<std::time::Duration>,
-  // 最后一次更新时间
-  last_update: std::time::Duration,
+  /// Source [Source]
+  pub source: Source,
+  /// Extra source [Source]
+  pub extra: Option<Source>,
+  /// Custom append public_suffixes
+  pub public_suffixes: HashSet<String>,
+  /// Custom append private_suffixes
+  pub private_suffixes: HashSet<String>,
+  /// Whether to disable private domains
+  pub disable_private_domains: bool,
+  /// Expiration time
+  pub expire: Option<std::time::Duration>,
+  /// Last update time
+  pub last_update: std::time::Duration,
 }
 
 impl SuffixList {
@@ -120,6 +123,7 @@ impl SuffixList {
           .map(|l| l.unwrap_or_default());
         tld_lines = lines.collect();
       }
+      #[cfg(feature = "reqwest")]
       Source::Remote(u) => match u {
         Some(u) => {
           tld_lines = get_source_from_url(u)?;
@@ -142,7 +146,7 @@ impl SuffixList {
           }
         }
       },
-      Source::Hardcode => {
+      Source::Snapshot => {
         let lines = PUBLIC_SUFFIX_LIST.lines().map(|s| s.to_string());
         for line in lines {
           is_private_suffix = self.process_line(line, is_private_suffix);
@@ -224,6 +228,7 @@ fn now() -> std::time::Duration {
     .unwrap_or_default()
 }
 
+#[cfg(feature = "reqwest")]
 fn get_source_from_url<T>(u: T) -> Result<Vec<String>>
 where
   T: IntoUrl,

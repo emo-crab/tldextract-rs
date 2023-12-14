@@ -13,6 +13,7 @@ pub enum TLDExtractError {
   #[error("suffix list error: '{0}'")]
   SuffixListError(String),
   /// Parse Error
+  #[cfg(feature = "reqwest")]
   #[error(transparent)]
   ParseError(#[from] reqwest::Error),
   /// Io Error

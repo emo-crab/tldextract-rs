@@ -1,0 +1,18 @@
+[package]
+name = "tld_extract"
+version = "0.1.0"
+edition = "2021"
+authors = ["Kali-Team <root@kali-team.cn>"]
+description = "extract domain info from a url"
+documentation = "https://docs.rs/tld_extract"
+keywords = ["tld", "extract", "domain"]
+license = "GPL-3.0-only"
+readme = "README.md"
+repository = "https://github.com/emo-crab/tldextract-rs"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1", features = ["derive"], optional = true }
+reqwest = { version = "0.11.14", features = ["blocking", "native-tls", "native-tls-vendored"], default-features = false, optional = true }
+idna = "0.5.0"
+thiserror = "1"
