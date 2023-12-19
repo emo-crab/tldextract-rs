@@ -5,29 +5,28 @@
 - Using
 
 ```bash
-Usage: tldextract-cli [-j] [-t <target>] [-i] [--disable-private-domains]
+Usage: tldextract-cli [-s <source-uri>] [-j] [-l <list>] [--disable-private-domains] [-f <filter>] [-o <output>]
 
 Reach new heights.
 
 Options:
-  -j, --json        print format json
-  -t, --target      target
-  -i, --interactive interactive mode
+  -s, --source-uri  specific sources(local file path or remote url) to prefix
+                    list,(eg. snapshot,remote)
+  -j, --json        write output in json(lines) format
+  -l, --list        list of sub(domains) to extract (file or stdin)
   --disable-private-domains
                     disable private domains
+  -f, --filter      display filter result by field only (eg. -f
+                    suffix,domain,subdomain,registered_domain)
+  -o, --output      file to write output
   --help            display usage information
+
 ```
 - example
 
 ```bash
-➜  tldextract-rs git:(main) ✗ tldextract-cli  -j -t mirrors.tuna.tsinghua.edu.cn
-{
-  "subdomain": "mirrors.tuna",
-  "domain": "tsinghua",
-  "suffix": "edu.cn",
-  "registered_domain": "tsinghua.edu.cn"
-}
- 
+➜  tldextract-rs git:(main) ✗ tldextract-cli  -j -l mirrors.tuna.tsinghua.edu.cn
+ {"subdomain":"mirrors.tuna","domain":"tsinghua","suffix":"edu.cn","registered_domain":"tsinghua.edu.cn"}
 ```
 
 ## Implementation details
