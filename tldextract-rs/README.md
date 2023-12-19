@@ -6,17 +6,17 @@
 - Cargo.toml:
 
 ```toml
-tld_extract = { git = "https://github.com/emo-cat/tldextract-rs" }
+tldextract-rs = { git = "https://github.com/emo-cat/tldextract-rs" }
 ```
 
 - example code
 
 ```rust
-use tld_extract::TLDExtract;
+use tldextract_rs::TLDExtract;
 
 fn main() {
-    let source = tld_extract::Source::Hardcode;
-    let suffix = tld_extract::SuffixList::new(source, false, None);
+    let source = tldextract_rs::Source::Hardcode;
+    let suffix = tldextract_rs::SuffixList::new(source, false, None);
     let mut extract = TLDExtract::new(suffix, true).unwrap();
     let e = extract.extract("  mirrors.tuna.tsinghua.edu.cn").unwrap();
     let s = serde_json::to_string_pretty(&e).unwrap();

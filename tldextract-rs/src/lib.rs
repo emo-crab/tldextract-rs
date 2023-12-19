@@ -2,9 +2,9 @@
 //!
 //! ## Examples
 //! ```rust,no_run
-//! use tld_extract::TLDExtract;
-//! let source = tld_extract::Source::Snapshot;
-//! let suffix = tld_extract::SuffixList::new(source, false, None);
+//! use tldextract_rs::TLDExtract;
+//! let source = tldextract_rs::Source::Snapshot;
+//! let suffix = tldextract_rs::SuffixList::new(source, false, None);
 //! let mut extract = TLDExtract::new(suffix, true).unwrap();
 //! let e = extract.extract("  www.setup.zip");
 //! println!("{:#?}", e);

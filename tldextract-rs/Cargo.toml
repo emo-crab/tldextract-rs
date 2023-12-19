@@ -1,11 +1,11 @@
 [package]
-name = "tld_extract"
+name = "tldextract-rs"
 version = "0.1.0"
 edition = "2021"
 authors = ["Kali-Team <root@kali-team.cn>"]
 description = "extract domain info from a url"
 homepage = "https://github.com/emo-crab/tldextract-rs"
-documentation = "https://docs.rs/tld_extract"
+documentation = "https://docs.rs/tldextract-rs"
 keywords = ["tld", "extract", "domain"]
 license = "GPL-3.0-only"
 readme = "README.md"
