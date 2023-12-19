@@ -6,7 +6,7 @@ use std::str::FromStr;
 use tldextract_rs::Source;
 
 #[derive(Clone, FromArgs)]
-/// Reach new heights.
+/// TldExtract-rs
 pub struct Config {
   /// specific sources(local file path or remote url) to prefix list,(eg. snapshot,remote)
   #[argh(option, short = 's')]
