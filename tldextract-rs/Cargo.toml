@@ -15,5 +15,5 @@ repository = "https://github.com/emo-crab/tldextract-rs"
 [dependencies]
 serde = { version = "1", features = ["derive"], optional = true }
 reqwest = { version = "0.12.2", features = ["blocking", "native-tls", "native-tls-vendored"], default-features = false, optional = true }
-idna = "0.5.0"
+idna = "1.0.1"
 thiserror = "1"
